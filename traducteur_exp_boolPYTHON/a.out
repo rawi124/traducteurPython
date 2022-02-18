@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+t1 = True
+t2 = False
+t3 = True
+t4 = False
+t4 = not t4
+t3 = t3 or t4
+t3 = not t3
+t2 = t2 and t3
+t3 = True
+t2 = t2 and t3
+t1 = t1 or t2
+t2 = False
+t1 = t1 or t2
+print(t1)

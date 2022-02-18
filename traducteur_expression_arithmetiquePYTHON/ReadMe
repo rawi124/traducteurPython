@@ -1,0 +1,73 @@
+
+1_ LE TRADUCTEUR D'EXPRESSION BOOLENNES:
+
+on a utilise une grammaire qui respecte l'associativite a gauche des operateurs et ceci  sans recursivite:
+
+#EXPR--> Terme ResteE
+#ResteE --> +Terme ResteE | -Terme ResteE | rien
+#Terme --> Facteur ResteT
+#ResteT -->*Facteur ResteT | rien
+#Facteur --> NB | (EXPR)
+#NB -- > 0|1|.......|9
+
+ce traducteur est construit de 3 modules:
+
+    1- Scanner.py: Contient l'analyseur l'exical  "scanner(S)" qui prend en entrÃ©
+                  la chaine de caractere 'S' exp:'(9-(5+2)' et qui renvoie une liste d'unitÃ©s lexicales 'L' de la forme (<type>, <valeur>).
+                  scanner gere les erreurs lexicale , une erreur sera affiché si un flotant est sur l'expression ou si un operateur
+                  type % est ecrit ..
+                  mais si une expression de type (2+3 est entré il n'affiche pas d'erreur car c'est lexicalement correcte mais
+                  syntaxiquement faux
+                  ---> c'est l analyseur syntaxique qui sera chargé d'arreter le programme et afficher l'erreur si une expression
+                  type 2+ ou 1-3) est entré
+
+
+    2-Parser.py: Contient l'analyseur syntexique. Les fonctions { Expr(), ResteT(),ResteE(), Terme(),Facteur()} qui assure
+                  l'associativite a gouche des operateurs et sans recursivite(algo de descente recursive)
+                  et une fonction principale "Parser(L)" qui prend en entrÃ©e la liste  'L' d'unitÃ©s lexicales et renvoie une nouvelle
+                  liste en notation postfixÃ©e qu'on appelÃ© 'POSTFIXE' exp: { (9 5 2 + -) }.
+
+
+    3-Codegen.py: c'est le producteur du code python de notation postfixÃ©e.codegen prend en paramÃ¨tres la sortie
+                  (postfixe) de l'analyseur syntaxique et produit un code de ce type:
+                      t1 = 9
+                      t2 = 5
+                      t3 = 2
+                      t2 = t2 + t3
+                      t1 = t1 - t2
+                      print (t1)
+
+Notre programme Compilo.py fait appel a ces  3 modules, il s'execute depuis la ligne de commande et prend en paramÃ¨tres le nom
+de fichier "Test.py" qui contient une expression arithmetique a traduire et produit ensuite en sortie un fichier "a.out" executable
+
+
+Pour tester le programme:
+un dossier nomé tests contient des fichiers .arith , chaque fichier contient une(des) expressions arithmrtiques
+avec une variete d expressions arithmetiques pour mieux tester le programme ( il existe 7 fichiers)
+$python3 test_arith.py
+dans votre fichier test_arith on ajouté aussi des expressions pour mieux voir les erreurs qui s'affiche pour chaque
+fonction a part
+ nos machines sont avec python3 donc on a du modifer votre fichier test_arith et ecrit apres python un petit 3 pour que
+ca fontionne sur nos machines
+
+
+###################################################################################################################################
+
+2_ LE TRADUCTEUR D'EXPRESSIONS BOOLENNES:
+
+Le meme travail a ete fait pour les expressions Boolennes: 
+
+une fonction scanner qui detecte les erreurs lexicales , par exemple une expression contennant un (XOR,AND...) ne sera pas valide
+un Bool mal ecrit comme VRAU sera refusé aussi
+
+comme pour les expressions arithmetiques , l analyseur syntaxique(Parser) detecte des erreurs de parentheses , d operateur au
+mauvais endroit etc ...
+
+pour codegen et compilo c'est le meme principe que pour les expressions Arithmetiques
+
+pour tester le programme , on s'est inspiré de votre fichier test_arith.py et on a crée un pour tester les fonctions booleenes
+pour chaque fonction des exemples sont fournies et testable en tapant juste python3.py test_bool.py
+des fichiers contenant des expressions arithmetiques sont mis a votre disposition pour tester le programme 
+
+
+
